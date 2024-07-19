@@ -1,26 +1,26 @@
+import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 
 const Index = () => {
+  const [greeting, setGreeting] = useState("Hello!");
+  const greetings = ["Hello!", "Bonjour!", "Hola!", "Ciao!", "Konnichiwa!"];
+
+  const changeGreeting = () => {
+    const newGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+    setGreeting(newGreeting);
+  };
+
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="bg-gray-800 text-white p-4">
-        <h1 className="text-2xl font-bold">My Application</h1>
-      </header>
-
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <h2 className="text-3xl font-semibold mb-4">Welcome</h2>
-        <p className="mb-4">This is a bare-bones application. Start building your content here.</p>
-        
-        <div className="space-y-4">
-          <Input placeholder="Enter something..." className="max-w-md" />
-          <Button>Click me</Button>
-        </div>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-400 to-pink-500">
+      <main className="text-center">
+        <h1 className="text-6xl font-bold text-white mb-8">{greeting}</h1>
+        <Button 
+          onClick={changeGreeting}
+          className="bg-white text-purple-600 hover:bg-purple-100"
+        >
+          Say Hello
+        </Button>
       </main>
-
-      <footer className="bg-gray-200 p-4 text-center">
-        <p>&copy; 2023 My Application. All rights reserved.</p>
-      </footer>
     </div>
   );
 };
