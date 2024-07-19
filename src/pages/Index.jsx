@@ -1,26 +1,53 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { motion } from "framer-motion";
 
 const Index = () => {
-  const [greeting, setGreeting] = useState("Hello!");
-  const greetings = ["Hello!", "Bonjour!", "Hola!", "Ciao!", "Konnichiwa!"];
+  const [name, setName] = useState("");
+  const [greeting, setGreeting] = useState("");
 
-  const changeGreeting = () => {
-    const newGreeting = greetings[Math.floor(Math.random() * greetings.length)];
-    setGreeting(newGreeting);
+  const handleGreet = () => {
+    if (name) {
+      setGreeting(`Hello, ${name}!`);
+    } else {
+      setGreeting("Hello, stranger!");
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-purple-400 to-pink-500">
-      <main className="text-center">
-        <h1 className="text-6xl font-bold text-white mb-8">{greeting}</h1>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500 p-4">
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full"
+      >
+        <h1 className="text-3xl font-bold text-center mb-6 text-purple-600">Greeting App</h1>
+        <Input
+          type="text"
+          placeholder="Enter your name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          className="mb-4"
+        />
         <Button 
-          onClick={changeGreeting}
-          className="bg-white text-purple-600 hover:bg-purple-100"
+          onClick={handleGreet}
+          className="w-full bg-purple-500 hover:bg-purple-600 text-white"
         >
-          Say Hello
+          Greet Me!
         </Button>
-      </main>
+        {greeting && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mt-6 text-2xl text-center text-purple-700"
+          >
+            {greeting}
+          </motion.p>
+        )}
+      </motion.div>
     </div>
   );
 };
