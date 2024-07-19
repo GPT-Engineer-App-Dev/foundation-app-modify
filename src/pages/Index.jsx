@@ -1,53 +1,31 @@
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { motion } from "framer-motion";
 
 const Index = () => {
-  const [name, setName] = useState("");
-  const [greeting, setGreeting] = useState("");
+  const [randomWord, setRandomWord] = useState('awdawd');
 
-  const handleGreet = () => {
-    if (name) {
-      setGreeting(`Hello, ${name}!`);
-    } else {
-      setGreeting("Hello, stranger!");
+  const generateRandomWord = () => {
+    const characters = 'abcdefghijklmnopqrstuvwxyz';
+    let result = '';
+    const length = Math.floor(Math.random() * 10) + 3; // word length between 3 and 12
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
+    setRandomWord(result);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-400 to-purple-500 p-4">
-      <motion.div
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full"
-      >
-        <h1 className="text-3xl font-bold text-center mb-6 text-purple-600">Greeting App</h1>
-        <Input
-          type="text"
-          placeholder="Enter your name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="mb-4"
-        />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
+      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
+        <h1 className="text-3xl font-bold mb-6 text-blue-600">Random Word Generator</h1>
+        <p className="text-5xl font-bold mb-8 text-green-500 break-all">{randomWord}</p>
         <Button 
-          onClick={handleGreet}
-          className="w-full bg-purple-500 hover:bg-purple-600 text-white"
+          onClick={generateRandomWord}
+          className="bg-blue-500 hover:bg-blue-600 text-white text-xl py-3 px-6"
         >
-          Greet Me!
+          Generate New Word
         </Button>
-        {greeting && (
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="mt-6 text-2xl text-center text-purple-700"
-          >
-            {greeting}
-          </motion.p>
-        )}
-      </motion.div>
+      </div>
     </div>
   );
 };
