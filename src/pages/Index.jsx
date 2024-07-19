@@ -1,30 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 const Index = () => {
-  const [randomWord, setRandomWord] = useState('awdawd');
+  const words = ['wad', 'daw', 'awd'];
+  const [currentWord, setCurrentWord] = useState('');
+  const [scrambledWord, setScrambledWord] = useState('');
+  const [userGuess, setUserGuess] = useState('');
+  const [message, setMessage] = useState('');
 
-  const generateRandomWord = () => {
-    const characters = 'abcdefghijklmnopqrstuvwxyz';
-    let result = '';
-    const length = Math.floor(Math.random() * 10) + 3; // word length between 3 and 12
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    setRandomWord(result);
+  const scrambleWord = (word) => {
+    return word.split('').sort(() => Math.random() - 0.5).join('');
   };
 
+  const newGame = () => {
+    const word = words[Math.floor(Math.random() * words.length)];
+    setCurrentWord(word);
+    setScrambledWord(scrambleWord(word));
+    setUserGuess('');
+    setMessage('');
+  };
+
+  const checkGuess = () => {
+    if (userGuess.toLowerCase() === currentWord) {
+      setMessage('Correct! Well done!');
+    } else {
+      setMessage('Sorry, that\'s not right. Try again!');
+    }
+  };
+
+  useEffect(() => {
+    newGame();
+  }, []);
+
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-400 to-blue-500">
-      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full text-center">
-        <h1 className="text-3xl font-bold mb-6 text-blue-600">Random Word Generator</h1>
-        <p className="text-5xl font-bold mb-8 text-green-500 break-all">{randomWord}</p>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-green-400 to-blue-500 p-4">
+      <div className="bg-white rounded-lg shadow-xl p-8 max-w-md w-full">
+        <h1 className="text-3xl font-bold text-center mb-6 text-blue-600">Word Scramble</h1>
+        <p className="text-center text-2xl font-bold mb-4">{scrambledWord}</p>
+        <Input
+          type="text"
+          placeholder="Your guess"
+          value={userGuess}
+          onChange={(e) => setUserGuess(e.target.value)}
+          className="mb-4"
+        />
         <Button 
-          onClick={generateRandomWord}
-          className="bg-blue-500 hover:bg-blue-600 text-white text-xl py-3 px-6"
+          onClick={checkGuess}
+          className="w-full bg-blue-500 hover:bg-blue-600 text-white mb-4"
         >
-          Generate New Word
+          Check
         </Button>
+        <Button 
+          onClick={newGame}
+          className="w-full bg-green-500 hover:bg-green-600 text-white"
+        >
+          New Word
+        </Button>
+        {message && (
+          <p className="mt-4 text-center text-lg font-semibold">{message}</p>
+        )}
       </div>
     </div>
   );
